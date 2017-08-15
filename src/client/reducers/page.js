@@ -3,9 +3,9 @@ import { ROUTE } from '../actions'
 
 const components = {
   [ROUTE.HOME]: 'home',
-  [ROUTE.FOO]: 'foo',
-  [ROUTE.BAR]: 'bar',
-  [ROUTE.BAZ]: 'baz',
+  [ROUTE.STATIC]: 'static',
+  [ROUTE.DYNAMIC]: 'dynamic',
+  [ROUTE.BOTH]: 'both',
   [ROUTE.LOGIN]: 'login',
   [NOT_FOUND]: 'notFound',
 }

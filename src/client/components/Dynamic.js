@@ -1,6 +1,7 @@
 import React from 'react'
+import styled from 'emotion/react'
 
 export default () =>
   <div>
-    <span>Foo</span>
+    <p>dynamic shizzle</p>
   </div>

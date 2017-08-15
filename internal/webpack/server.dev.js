@@ -15,7 +15,12 @@ const output = res('../../dist/server')
 // within Webpack and can properly make connections to client modules:
 const externals = fs
   .readdirSync(nodeModules)
-  .filter(x => !/\.bin|react-universal-component|webpack-flush-chunks/.test(x))
+  .filter(
+    x =>
+      !/\.bin|react-universal-component|require-universal-module|webpack-flush-chunks/.test(
+        x
+      )
+  )
   .reduce((externals, mod) => {
     externals[mod] = `commonjs ${mod}`
     return externals
@@ -47,9 +52,6 @@ module.exports = {
         use: [
           {
             loader: 'css-loader/locals',
-            options: {
-              modules: true,
-            },
           },
         ],
       },

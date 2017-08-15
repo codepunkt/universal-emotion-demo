@@ -1,24 +1,7 @@
-export const pages = ['Foo', 'Bar', 'Baz']
-
-export const nextIndex = index => ++index % pages.length
-
-export const indexFromPath = path => {
-  path = path === '/' ? '/Foo' : path
-  return pages.indexOf(path.substr(1))
-}
-
 import routes from '../routes'
 // import jwt from 'jsonwebtoken'
 
 export const isServer = typeof window === 'undefined'
-
-export const fetchData = async (path, jwToken) =>
-  fetch(`http://localhost:3000${path}`, {
-    headers: {
-      Accept: 'application/json',
-      Authorization: `Bearer ${jwToken || ''}`,
-    },
-  }).then(data => data.json())
 
 export const isAllowed = (type, state) => {
   const role = routes[type] && routes[type].role // you can put arbitrary keys in routes

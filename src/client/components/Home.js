@@ -1,10 +1,7 @@
 import React from 'react'
-import styled from 'emotion/react'
-
-const Styled = styled('div')`background:crimson;`
 
 export default () =>
   <div>
-    <div>Home</div>
-    <Styled>lala</Styled>
+    <h3>Home</h3>
+    <p>This page does not have any styles</p>
   </div>

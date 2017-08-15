@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const AutoDllPlugin = require('autodll-webpack-plugin')
 const WriteFilePlugin = require('write-file-webpack-plugin') // here so you can see what chunks are built
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
 
@@ -59,6 +60,27 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development'),
+      },
+    }),
+    new AutoDllPlugin({
+      context: path.join(__dirname, '..', '..'),
+      filename: '[name].js',
+      entry: {
+        vendor: [
+          'babel-polyfill',
+          'emotion',
+          'history/createBrowserHistory',
+          'ramda',
+          'react',
+          'react-dom',
+          'react-redux',
+          'recompose',
+          'redux',
+          'redux-first-router',
+          'redux-first-router-link',
+          'reselect',
+          'transition-group',
+        ],
       },
     }),
   ],

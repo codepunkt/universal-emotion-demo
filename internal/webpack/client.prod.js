@@ -1,16 +1,21 @@
 const path = require('path')
 const webpack = require('webpack')
-const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
 const StatsPlugin = require('stats-webpack-plugin')
+const BabiliPlugin = require('babili-webpack-plugin')
+const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin
 
 module.exports = {
   name: 'client',
   target: 'web',
   devtool: 'source-map',
-  entry: [
-    'babel-polyfill',
-    path.resolve(__dirname, '../../src/client/index.js'),
-  ],
+  entry: {
+    app: [
+      'babel-polyfill',
+      path.resolve(__dirname, '../../src/client/index.js'),
+    ],
+  },
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
@@ -24,39 +29,53 @@ module.exports = {
         exclude: /node_modules/,
         use: 'babel-loader',
       },
+      {
+        test: /\.css$/,
+        use: 'css-loader',
+        // use: ExtractCssChunks.extract({
+        //   use: [
+        //     {
+        //       loader: 'css-loader',
+        //       options: {
+        //         modules: true,
+        //         localIdentName: '[local]',
+        //       },
+        //     },
+        //   ],
+        // }),
+      },
     ],
   },
   resolve: {
     extensions: ['.js'],
   },
   plugins: [
-    new StatsPlugin('stats.json'),
-    new ExtractCssChunks(),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
-      filename: '[name].[chunkhash].js',
-      minChunks: Infinity,
-    }),
-
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        screw_ie8: true,
-        warnings: false,
-      },
-      mangle: {
-        screw_ie8: true,
-      },
-      output: {
-        screw_ie8: true,
-        comments: false,
-      },
-      sourceMap: true,
+    // webpack bootstrap/manifest/runtime code
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      filename: '[name].[chunkhash].js',
+      minChunks: Infinity,
     }),
-    new webpack.HashedModuleIdsPlugin(), // not needed for strategy to work (just good practice)
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'common',
+      async: true,
+      children: true,
+      minChunks: 2,
+    }),
+    // new ExtractCssChunks(),
+    // new BabiliPlugin({}, { comments: false }),
+    // new webpack.HashedModuleIdsPlugin(), // not needed for strategy to work (just good practice)
+    new StatsPlugin('stats.json'),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      defaultSizes: 'gzip',
+      openAnalyzer: true,
+      reportFilename: '../../stats.html',
+    }),
   ],
 }

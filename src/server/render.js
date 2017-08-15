@@ -1,7 +1,8 @@
 import React from 'react'
-import { Provider } from 'react-redux'
-import ReactDOM from 'react-dom/server'
 import flushChunks from 'webpack-flush-chunks'
+import { Provider } from 'react-redux'
+import { extractCritical } from 'emotion/server'
+import { renderToString } from 'react-dom/server'
 import { flushChunkNames } from 'react-universal-component/server'
 import configureStore from './configureStore'
 import App from '../client/components/App'
@@ -20,7 +21,10 @@ export default ({ clientStats }) => async (req, res, next) => {
   }
 
   const app = createApp(App, store)
-  const appString = ReactDOM.renderToString(app)
+  const appString = renderToString(app)
+
+  const { ids, css: cssString } = extractCritical(appString)
+
   const stateString = JSON.stringify(store.getState())
   const chunkNames = flushChunkNames()
 
@@ -43,11 +47,18 @@ export default ({ clientStats }) => async (req, res, next) => {
         <head>
           <meta charset="utf-8">
           <title>universal boilerplate</title>
+          ${cssString &&
+            `<style type="text/css">
+              ${cssString}
+            </style>`}
           ${styles}
         </head>
         <body>
           <script>window.REDUX_STATE = ${stateString}</script>
           <div id="root">${appString}</div>
+          <script type="text/javascript">window.__CSS_DYNAMIC_IDS__=${JSON.stringify(
+            ids
+          )}</script>
           ${cssHash}
           ${js}
         </body>

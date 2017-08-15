@@ -1,5 +1,5 @@
 import React from 'react'
-import { mapProps } from 'recompose'
+import mapProps from 'recompose/mapProps'
 import { NavLink } from 'redux-first-router-link'
 import { ROUTE } from '../actions'
 
@@ -17,15 +17,15 @@ const Menu = () =>
       </Link>
     </li>
     <li>
-      <Link route={ROUTE.FOO} params={{ id: 4711 }}>
-        Foo
+      <Link route={ROUTE.STATIC} params={{ id: 4711 }}>
+        Static
       </Link>
     </li>
     <li>
-      <Link route={ROUTE.BAR}>Bar</Link>
+      <Link route={ROUTE.DYNAMIC}>Dynamic</Link>
     </li>
     <li>
-      <Link route={ROUTE.BAZ}>Baz</Link>
+      <Link route={ROUTE.BOTH}>Both</Link>
     </li>
   </ul>
 

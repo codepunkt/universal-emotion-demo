@@ -1,5 +1,8 @@
 {
-  "presets": ["env", "react"],
+  "presets": [
+    ["env", { "useBuiltIns": true, "targets": { "chrome": 60, "node": true } }],
+    "react"
+  ],
   "plugins": [
     ["emotion/babel", { "extractStatic": true }],
     "syntax-dynamic-import",
@@ -9,7 +12,11 @@
   ],
   "env": {
     "development": {
-      "plugins": ["react-hot-loader/babel"]
+      "plugins": [
+        "react-hot-loader/babel",
+        "transform-class-properties",
+        "transform-es2015-classes"
+      ]
     }
   }
 }

@@ -6,4 +6,10 @@ const toActionTypeMap = compose(
 )
 
 // export ROUTE action type object
-export const ROUTE = toActionTypeMap(['home', 'foo', 'bar', 'baz', 'login'])
+export const ROUTE = toActionTypeMap([
+  'home',
+  'static',
+  'dynamic',
+  'both',
+  'login',
+])

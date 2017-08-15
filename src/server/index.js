@@ -1,12 +1,13 @@
-const express = require('express')
-const webpack = require('webpack')
+import express from 'express'
+import webpack from 'webpack'
+import compression from 'compression'
 import cookieParser from 'cookie-parser'
-const noFavicon = require('express-no-favicons')
-const webpackDevMiddleware = require('webpack-dev-middleware')
-const webpackHotMiddleware = require('webpack-hot-middleware')
-const webpackHotServerMiddleware = require('webpack-hot-server-middleware')
-const clientConfig = require('../../internal/webpack/client.dev')
-const serverConfig = require('../../internal/webpack/server.dev')
+import noFavicon from 'express-no-favicons'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
+import webpackHotServerMiddleware from 'webpack-hot-server-middleware'
+import clientConfig from '../../internal/webpack/client.dev'
+import serverConfig from '../../internal/webpack/server.dev'
 
 const publicPath = clientConfig.output.publicPath
 const outputPath = clientConfig.output.path
@@ -15,6 +16,7 @@ const app = express()
 
 app.disable('x-powered-by')
 app.use(noFavicon())
+app.use(compression())
 app.use(cookieParser())
 
 let initialBuildFinished = false

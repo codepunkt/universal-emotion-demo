@@ -1,15 +1,14 @@
 import React from 'react'
+import styled from 'emotion/react'
 import { connect } from 'react-redux'
 import universal from 'react-universal-component'
 // import { TransitionGroup, Transition } from 'transition-group'
-
 import NotFound from './NotFound'
 import isLoading from '../selectors/isLoading'
 
-const loading = () => <div>loading chunk</div>
+const loading = () => <div>loading chunk...</div>
 
 const UniversalComponent = ({ page, isLoading }) => {
-  console.log(page)
   const Component = components[page] || NotFound
   return <Component isLoading={isLoading} />
 }
@@ -23,15 +22,15 @@ const components = {
     minDelay: 1200, // for silky smooth animations
     loading,
   }),
-  foo: universal(() => import('./Foo'), {
+  static: universal(() => import('./Static'), {
     minDelay: 1200, // i.e. no re-renders during animation
     loading,
   }),
-  bar: universal(() => import('./Bar'), {
+  dynamic: universal(() => import('./Dynamic'), {
     minDelay: 1200, // i.e. no re-renders during animation
     loading,
   }),
-  baz: universal(() => import('./Baz'), {
+  both: universal(() => import('./Both'), {
     minDelay: 1200, // i.e. no re-renders during animation
     loading,
   }),
@@ -61,6 +60,11 @@ const components = {
 // https://codesandbox.io/s/github/faceyspacey/redux-first-router-codesandbox
 // :)
 
+const PageSwitcher = styled('div')`
+  margin: 16px;
+  width: 328px;
+`
+
 const Switcher = ({ page, direction, isLoading }) =>
   //   <TransitionGroup
   //     className={`${styles.switcher} ${direction}`}
@@ -68,7 +72,15 @@ const Switcher = ({ page, direction, isLoading }) =>
   //     prefix="fade"
   //   >
   //     <Transition key={page}>
-  <UniversalComponent page={page} isLoading={isLoading} />
+  <PageSwitcher>
+    <h1>Universal Demo</h1>
+    <p>
+      This app has global styles that are combined into a main.css file with all
+      styles that belong to the app's main chunk such as the margin around the
+      content.
+    </p>
+    <UniversalComponent page={page} isLoading={isLoading} />
+  </PageSwitcher>
 //     </Transition>
 //   </TransitionGroup>
 

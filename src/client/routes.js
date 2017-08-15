@@ -16,14 +16,14 @@ export default {
       }
     },
   },
-  [ROUTE.FOO]: {
-    path: '/foo/:id',
+  [ROUTE.STATIC]: {
+    path: '/static/:id',
   },
-  [ROUTE.BAR]: {
-    path: '/bar',
+  [ROUTE.DYNAMIC]: {
+    path: '/dynamic',
   },
-  [ROUTE.BAZ]: {
-    path: '/baz',
+  [ROUTE.BOTH]: {
+    path: '/both',
   },
   [ROUTE.LOGIN]: {
     path: '/login',
