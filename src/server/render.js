@@ -1,5 +1,4 @@
 import React from 'react'
-import { minify } from 'html-minifier'
 import { Provider } from 'react-redux'
 import flushChunks from 'webpack-flush-chunks'
 import { extractCritical } from 'emotion/server'

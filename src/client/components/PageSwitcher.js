@@ -1,7 +1,8 @@
 import React from 'react'
+import { css } from 'emotion'
 import { connect } from 'react-redux'
 import universal from 'react-universal-component'
-// import { TransitionGroup, Transition } from 'transition-group'
+import { Transition, TransitionGroup } from 'transition-group'
 import NotFound from './NotFound'
 import isLoading from '../selectors/isLoading'
 
@@ -12,65 +13,64 @@ const UniversalComponent = ({ page, isLoading }) => {
   return <Component isLoading={isLoading} />
 }
 
+const duration = 5000
+
 const components = {
   home: universal(() => import('./Home'), {
-    minDelay: 1200, // match sliding animation duration
+    minDelay: 0, // match sliding animation duration
     loading,
   }),
   static: universal(() => import('./Static'), {
-    minDelay: 1200, // i.e. no re-renders during animation
+    minDelay: 0, // i.e. no re-renders during animation
     loading,
   }),
   dynamic: universal(() => import('./Dynamic'), {
-    minDelay: 1200, // i.e. no re-renders during animation
+    minDelay: 0, // i.e. no re-renders during animation
     loading,
   }),
   both: universal(() => import('./Both'), {
-    minDelay: 1200, // i.e. no re-renders during animation
+    minDelay: 0, // i.e. no re-renders during animation
     loading,
   }),
 }
 
-// NOTE: `require.resolveWeak` is Webpack method to require a module without
-// creating a dependency, which powers synchronous rendering when available.
-// The `resolve` option soon wont be needed thanks to an upcoming babel-plugin.
-// Don't stress it.
+const enter = css`
+  opacity: 0;
+  &-active {
+    opacity: 1;
+    transition: all ${duration / 2}ms;
+  }
+`
 
-// THE FUTURE:
-// https://github.com/webpack/webpack/issues/4993
-// when Webpack fixes the above issue with `resolveWeak` dynamic requires,
-// we can also skip the wrapping component and just export this:
-//
-// UPDATE: I made a PR that addresses this (vote it up)
-//
-// export default universal(({ page }) => import(`../components/${page}`), {
-//   minDelay: 500,
-//   loading,
-//   error: NotFound
-// })
-//
-// you can see how this looks in a client-only SPA in the codesandbox:
-// https://codesandbox.io/s/github/faceyspacey/redux-first-router-codesandbox
-// :)
+const leave = css`
+  opacity: 1;
+  &-active {
+    opacity: 0;
+    transition: all ${duration / 2}ms;
+  }
+`
 
 const Switcher = ({ page, direction, isLoading }) =>
-  //   <TransitionGroup
-  //     className={`${styles.switcher} ${direction}`}
-  //     duration={500}
-  //     prefix="fade"
-  //   >
-  //     <Transition key={page}>
-  <div>
-    <h1>Universal Demo</h1>
-    <p>
-      This app has global styles that are combined into a main.css file with all
-      styles that belong to the app's main chunk such as the margin around the
-      content.
-    </p>
-    <UniversalComponent page={page} isLoading={isLoading} />
-  </div>
-//     </Transition>
-//   </TransitionGroup>
+  // <TransitionGroup className={`${direction}`} duration={500} prefix="fade">
+  <TransitionGroup
+    className={direction}
+    duration={duration / 2}
+    enterDelay={duration / 2}
+    enter={enter}
+    leave={leave}
+  >
+    <Transition key={page}>
+      <div>
+        <h1>Universal Demo</h1>
+        <p>
+          This app has global styles that are combined into a main.css file with
+          all styles that belong to the app's main chunk such as the margin
+          around the content.
+        </p>
+        <UniversalComponent page={page} isLoading={isLoading} />
+      </div>
+    </Transition>
+  </TransitionGroup>
 
 const mapState = ({ page, direction, ...state }) => ({
   page,
