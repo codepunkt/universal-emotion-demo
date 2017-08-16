@@ -1,5 +1,7 @@
 import React from 'react'
-import styled from 'emotion/react'
+import { zipObj } from 'ramda'
+
+zipObj(['a', 'b', 'c'], [1, 2, 3])
 
 export default () =>
   <div>

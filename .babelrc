@@ -4,6 +4,7 @@
     "react"
   ],
   "plugins": [
+    "ramda",
     ["emotion/babel", { "extractStatic": true }],
     "syntax-dynamic-import",
     "transform-class-properties",

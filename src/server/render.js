@@ -1,11 +1,11 @@
 import React from 'react'
-import flushChunks from 'webpack-flush-chunks'
 import { Provider } from 'react-redux'
+import flushChunks from 'webpack-flush-chunks'
 import { extractCritical } from 'emotion/server'
 import { renderToString } from 'react-dom/server'
 import { flushChunkNames } from 'react-universal-component/server'
-import configureStore from './configureStore'
 import App from '../client/components/App'
+import configureStore from './configureStore'
 
 const createApp = (App, store) =>
   <Provider store={store}>
@@ -34,8 +34,13 @@ export default ({ clientStats }) => async (req, res, next) => {
     cssHash,
     scripts,
     stylesheets,
-  } = flushChunks(clientStats, { chunkNames })
+  } = flushChunks(clientStats, {
+    chunkNames,
+    before: ['manifest', 'vendor'],
+    after: ['app'],
+  })
 
+  console.log(chunkNames)
   console.log('PATH', req.path)
   console.log('DYNAMIC CHUNK NAMES RENDERED', chunkNames)
   console.log('SCRIPTS SERVED', scripts)

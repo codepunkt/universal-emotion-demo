@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const StatsPlugin = require('stats-webpack-plugin')
 const BabiliPlugin = require('babili-webpack-plugin')
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
@@ -32,17 +31,17 @@ module.exports = {
       {
         test: /\.css$/,
         use: 'css-loader',
-        // use: ExtractCssChunks.extract({
-        //   use: [
-        //     {
-        //       loader: 'css-loader',
-        //       options: {
-        //         modules: true,
-        //         localIdentName: '[local]',
-        //       },
-        //     },
-        //   ],
-        // }),
+        use: ExtractCssChunks.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                localIdentName: '[local]',
+              },
+            },
+          ],
+        }),
       },
     ],
   },
@@ -62,19 +61,18 @@ module.exports = {
       minChunks: Infinity,
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      async: true,
       children: true,
+      async: 'usedTwice',
       minChunks: 2,
     }),
-    // new ExtractCssChunks(),
-    // new BabiliPlugin({}, { comments: false }),
-    // new webpack.HashedModuleIdsPlugin(), // not needed for strategy to work (just good practice)
-    new StatsPlugin('stats.json'),
+    new ExtractCssChunks(),
+    new BabiliPlugin({}, { comments: false }),
+    new webpack.HashedModuleIdsPlugin(),
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       defaultSizes: 'gzip',
       openAnalyzer: true,
+      generateStatsFile: true,
       reportFilename: '../../stats.html',
     }),
   ],
