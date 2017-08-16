@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import styled from 'emotion/react'
-import { actions } from '../reducers/index'
 
 const colors = ['pink', 'lightcyan', 'lightgray']
 
@@ -12,7 +11,7 @@ const StaticWrapper = styled('p')`
   background: lightblue;
 `
 
-class Both extends Component {
+export default class Both extends Component {
   state = {
     index: 0,
   }
@@ -33,14 +32,13 @@ class Both extends Component {
           extracted to Both.css which is loaded together with the Both.js bundle
         </StaticWrapper>
         <DynamicWrapper index={this.state.index} onClick={this.increment}>
-          This part has dynamic styles that change the background color when
-          clicked. Because these styles can't be extracted to external css files
-          at compile time, they are either inlined by the server and rehydrated
-          by emotion on server render or injected by emotion on the client side
+          This paragraph has dynamic styles that change the background color
+          when clicked. Because these styles can't be extracted to external css
+          files at compile time, they are either inlined by the server and
+          rehydrated by emotion on server render or injected by emotion on the
+          client side
         </DynamicWrapper>
       </div>
     )
   }
 }
-
-export default Both

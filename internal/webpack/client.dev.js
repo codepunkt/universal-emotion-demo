@@ -8,12 +8,14 @@ module.exports = {
   name: 'client',
   target: 'web',
   devtool: 'eval-source-map',
-  entry: [
-    'babel-polyfill',
-    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
-    'react-hot-loader/patch',
-    path.resolve(__dirname, '../../src/client/index.js'),
-  ],
+  entry: {
+    app: [
+      'babel-polyfill',
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
+      'react-hot-loader/patch',
+      path.resolve(__dirname, '../../src/client/index.js'),
+    ],
+  },
   output: {
     filename: '[name].js',
     chunkFilename: '[name].js',
@@ -50,37 +52,15 @@ module.exports = {
     new ExtractCssChunks(),
     new WriteFilePlugin(),
     new webpack.optimize.CommonsChunkPlugin({
-      names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
+      name: 'manifest',
       filename: '[name].js',
       minChunks: Infinity,
     }),
-
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development'),
-      },
-    }),
-    new AutoDllPlugin({
-      context: path.join(__dirname, '..', '..'),
-      filename: '[name].js',
-      entry: {
-        vendor: [
-          'babel-polyfill',
-          'emotion',
-          'history/createBrowserHistory',
-          'ramda',
-          'react',
-          'react-dom',
-          'react-redux',
-          'recompose',
-          'redux',
-          'redux-first-router',
-          'redux-first-router-link',
-          'reselect',
-          'transition-group',
-        ],
       },
     }),
   ],

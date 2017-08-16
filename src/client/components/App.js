@@ -1,13 +1,19 @@
 import React from 'react'
+import styled from 'emotion/react'
 import { connect } from 'react-redux'
 import Menu from './Menu'
 import PageSwitcher from './PageSwitcher'
 
+const AppWrapper = styled('div')`
+  margin: 16px;
+  width: 328px;
+`
+
 const App = ({ jwToken }) =>
-  <div>
+  <AppWrapper>
     {jwToken && <Menu />}
     <PageSwitcher />
-  </div>
+  </AppWrapper>
 
 const mapState = ({ jwToken }) => ({ jwToken })
 

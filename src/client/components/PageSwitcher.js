@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'emotion/react'
 import { connect } from 'react-redux'
 import universal from 'react-universal-component'
 // import { TransitionGroup, Transition } from 'transition-group'
@@ -18,10 +17,6 @@ const components = {
     minDelay: 1200, // match sliding animation duration
     loading,
   }),
-  login: universal(() => import('./Login'), {
-    minDelay: 1200, // for silky smooth animations
-    loading,
-  }),
   static: universal(() => import('./Static'), {
     minDelay: 1200, // i.e. no re-renders during animation
     loading,
@@ -34,8 +29,6 @@ const components = {
     minDelay: 1200, // i.e. no re-renders during animation
     loading,
   }),
-  //   Admin,
-  //   Login,
 }
 
 // NOTE: `require.resolveWeak` is Webpack method to require a module without
@@ -60,11 +53,6 @@ const components = {
 // https://codesandbox.io/s/github/faceyspacey/redux-first-router-codesandbox
 // :)
 
-const PageSwitcher = styled('div')`
-  margin: 16px;
-  width: 328px;
-`
-
 const Switcher = ({ page, direction, isLoading }) =>
   //   <TransitionGroup
   //     className={`${styles.switcher} ${direction}`}
@@ -72,7 +60,7 @@ const Switcher = ({ page, direction, isLoading }) =>
   //     prefix="fade"
   //   >
   //     <Transition key={page}>
-  <PageSwitcher>
+  <div>
     <h1>Universal Demo</h1>
     <p>
       This app has global styles that are combined into a main.css file with all
@@ -80,7 +68,7 @@ const Switcher = ({ page, direction, isLoading }) =>
       content.
     </p>
     <UniversalComponent page={page} isLoading={isLoading} />
-  </PageSwitcher>
+  </div>
 //     </Transition>
 //   </TransitionGroup>
 
