@@ -4,11 +4,23 @@ import { connect } from 'react-redux'
 import universal from 'react-universal-component'
 import { Transition, TransitionGroup } from 'transition-group'
 import NotFound from './NotFound'
-import isLoading from '../selectors/isLoading'
 
-const UniversalComponent = ({ page, isLoading }) => {
-  const Component = components[page] || NotFound
-  return <Component isLoading={isLoading} />
+class UniversalComponent extends React.Component {
+  state = {
+    hasError: false,
+  }
+
+  componentDidCatch(error, info) {
+    this.setState({ hasError: true })
+    // You can also log the error to an error reporting service
+    // logErrorToMyService(error, info)
+  }
+
+  render() {
+    return this.state.hasError
+      ? <div>an error occurred :(</div>
+      : React.createElement(components[this.props.page] || NotFound)
+  }
 }
 
 const duration = 300
@@ -61,13 +73,11 @@ const resting = css`
   }
 `
 
-const Switcher = ({ page, direction, isLoading }) =>
-  // <TransitionGroup className={`${direction}`} duration={500} prefix="fade">
+const Switcher = ({ page }) =>
   <TransitionGroup
     className={resting}
     duration={duration / 2}
     enterDelay={duration / 2}
-    //appear
     enter={enter}
     leave={leave}
   >
@@ -79,15 +89,11 @@ const Switcher = ({ page, direction, isLoading }) =>
           all styles that belong to the app's main chunk such as the margin
           around the content.
         </p>
-        <UniversalComponent page={page} isLoading={isLoading} />
+        <UniversalComponent page={page} />
       </div>
     </Transition>
   </TransitionGroup>
 
-const mapState = ({ page, direction, ...state }) => ({
-  page,
-  direction,
-  isLoading: isLoading(state),
-})
+const mapState = ({ page }) => ({ page })
 
 export default connect(mapState)(Switcher)

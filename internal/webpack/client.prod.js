@@ -60,11 +60,12 @@ module.exports = {
       filename: '[name].[chunkhash].js',
       minChunks: Infinity,
     }),
-    new webpack.optimize.CommonsChunkPlugin({
-      children: true,
-      async: 'usedTwice',
-      minChunks: 2,
-    }),
+    // https://github.com/faceyspacey/react-universal-component/issues/26
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   children: true,
+    //   async: 'usedTwice',
+    //   minChunks: 2,
+    // }),
     new ExtractCssChunks(),
     new BabiliPlugin({}, { comments: false }),
     new webpack.HashedModuleIdsPlugin(),

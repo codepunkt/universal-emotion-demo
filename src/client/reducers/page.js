@@ -10,6 +10,8 @@ const components = {
   [NOT_FOUND]: 'notFound',
 }
 
-export default (state = 'Home', action = {}) => {
+const initialState = 'Home'
+
+export default (state = initialState, action = {}) => {
   return components[action.type] || state
 }
