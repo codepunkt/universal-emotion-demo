@@ -1,7 +1,10 @@
 const path = require('path')
 const webpack = require('webpack')
-const WriteFilePlugin = require('write-file-webpack-plugin') // here so you can see what chunks are built
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const WriteFilePlugin = require('write-file-webpack-plugin')
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
+
+const dir = rel => path.resolve(__dirname, '../../', rel)
 
 module.exports = {
   name: 'client',
@@ -12,13 +15,13 @@ module.exports = {
       'babel-polyfill',
       'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=false&quiet=false&noInfo=false',
       'react-hot-loader/patch',
-      path.resolve(__dirname, '../../src/client/index.js'),
+      dir('src/client/index.js'),
     ],
   },
   output: {
     filename: '[name].js',
     chunkFilename: '[name].js',
-    path: path.resolve(__dirname, '../../dist/client'),
+    path: dir('dist/client'),
     publicPath: '/static/',
   },
   module: {
@@ -50,6 +53,7 @@ module.exports = {
   plugins: [
     new ExtractCssChunks(),
     new WriteFilePlugin(),
+    new CopyWebpackPlugin([{ from: dir('public'), to: dir('dist/client') }]),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       filename: '[name].js',

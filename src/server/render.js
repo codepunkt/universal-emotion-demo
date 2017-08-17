@@ -47,8 +47,16 @@ export default ({ clientStats }) => async (req, res, next) => {
 
   const html = `
     <html lang="en">
-      <meta charset="utf-8">
-      <title>universal boilerplate</title>
+      <meta charset="utf-8" />
+      <meta http-equiv="x-ua-compatible" content="ie=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Universal Demo</title>
+      <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+      <link rel="manifest" href="/static/manifest.json">
+      <link rel="mask-icon" href="/static/safari-pinned-tab.svg" color="#5d86c2">
+      <meta name="theme-color" content="#eaecef">
       ${cssString &&
         `<style type="text/css">
           ${cssString}
