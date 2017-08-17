@@ -13,7 +13,7 @@ const Link = styled(
   }))(NavLink)
 )`
   text-decoration: none;
-  color: #3a81cd;
+  color: #2e6ab3;
   padding-bottom: 2px;
 `
 
