@@ -6,56 +6,68 @@ import { Transition, TransitionGroup } from 'transition-group'
 import NotFound from './NotFound'
 import isLoading from '../selectors/isLoading'
 
-const loading = () => <div>loading chunk...</div>
-
 const UniversalComponent = ({ page, isLoading }) => {
   const Component = components[page] || NotFound
   return <Component isLoading={isLoading} />
 }
 
-const duration = 5000
+const duration = 300
+
+const createUniversal = name =>
+  universal(() => import(`./${name}`), {
+    minDelay: duration / 2,
+    loading: () =>
+      <div>
+        loading {name}...
+      </div>,
+  })
 
 const components = {
-  home: universal(() => import('./Home'), {
-    minDelay: 0, // match sliding animation duration
-    loading,
-  }),
-  static: universal(() => import('./Static'), {
-    minDelay: 0, // i.e. no re-renders during animation
-    loading,
-  }),
-  dynamic: universal(() => import('./Dynamic'), {
-    minDelay: 0, // i.e. no re-renders during animation
-    loading,
-  }),
-  both: universal(() => import('./Both'), {
-    minDelay: 0, // i.e. no re-renders during animation
-    loading,
-  }),
+  home: createUniversal('Home'),
+  static: createUniversal('Static'),
+  dynamic: createUniversal('Dynamic'),
+  both: createUniversal('Both'),
 }
 
 const enter = css`
   opacity: 0;
+  transform: translateX(10px);
   &-active {
+    transform: translateX(0);
     opacity: 1;
-    transition: all ${duration / 2}ms;
+    transition: opacity ${duration / 2}ms, transform ${duration /
+  2}ms ease-in-out;
   }
 `
 
 const leave = css`
   opacity: 1;
+  transform: translateX(0);
   &-active {
     opacity: 0;
-    transition: all ${duration / 2}ms;
+    transform: translateX(10px);
+    transition: opacity ${duration / 2}ms, transform ${duration /
+  2}ms ease-in-out;
+  }
+`
+
+const resting = css`
+  > div {
+    position: absolute;
+    top: 51px;
+    left: 0;
+    margin: 0 16px 16px 16px;
+    max-width: 328px;
   }
 `
 
 const Switcher = ({ page, direction, isLoading }) =>
   // <TransitionGroup className={`${direction}`} duration={500} prefix="fade">
   <TransitionGroup
-    className={direction}
+    className={resting}
     duration={duration / 2}
     enterDelay={duration / 2}
+    //appear
     enter={enter}
     leave={leave}
   >

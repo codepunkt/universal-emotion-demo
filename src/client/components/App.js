@@ -5,8 +5,7 @@ import Menu from './Menu'
 import PageSwitcher from './PageSwitcher'
 
 const AppWrapper = styled('div')`
-  margin: 16px;
-  width: 328px;
+  max-width: 328px;
 `
 
 const App = ({ jwToken }) =>

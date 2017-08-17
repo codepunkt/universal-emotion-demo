@@ -19,7 +19,7 @@ const Link = styled(
 
 const Menu = styled('ul')`
   list-style-type: none;
-  margin: 0;
+  margin: 16px;
   padding: 0;
 `
 

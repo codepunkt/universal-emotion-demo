@@ -1,16 +1,7 @@
-.css-enter-1g8rwd6 {
-    opacity: 0
-}
-.css-enter-1g8rwd6-active {
-    opacity: 1;
-    -webkit-transition: all 600ms;
-    transition: all 600ms
-}
-.css-leave-9m8rtp {
-    opacity: 1
-}
-.css-leave-9m8rtp-active {
-    opacity: 0;
-    -webkit-transition: all 600ms;
-    transition: all 600ms
+.css-resting-wu57is > div {
+    position: absolute;
+    top: 51px;
+    left: 0;
+    margin: 0 16px 16px 16px;
+    max-width: 328px
 }
