@@ -46,20 +46,22 @@ export default ({ clientStats }) => async (req, res, next) => {
   console.log('STYLESHEETS SERVED', stylesheets)
 
   const html = `
-    <meta charset="utf-8">
-    <title>universal boilerplate</title>
-    ${cssString &&
-      `<style type="text/css">
-        ${cssString}
-      </style>`}
-    ${styles}
-    <div id="root">${appString}</div>
-    <script>window.REDUX_STATE = ${stateString}</script>
-    <script type="text/javascript">window.__CSS_DYNAMIC_IDS__=${JSON.stringify(
-      ids
-    )}</script>
-    ${cssHash}
-    ${js}`
+    <html lang="en">
+      <meta charset="utf-8">
+      <title>universal boilerplate</title>
+      ${cssString &&
+        `<style type="text/css">
+          ${cssString}
+        </style>`}
+      ${styles}
+      <div id="root">${appString}</div>
+      <script>window.REDUX_STATE = ${stateString}</script>
+      <script type="text/javascript">window.__CSS_DYNAMIC_IDS__=${JSON.stringify(
+        ids
+      )}</script>
+      ${cssHash}
+      ${js}
+    </html>`
 
   res.send(html.replace(/\n|\s\s/g, ''))
 }
