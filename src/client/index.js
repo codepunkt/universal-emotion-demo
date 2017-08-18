@@ -39,11 +39,18 @@ const render = (App, method = 'render') =>
     document.getElementById('root')
   )
 
+render(App, 'hydrate')
+
+// register service worker
+if (process.env.NODE_ENV === 'production') {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/serviceWorker.js')
+  }
+}
+
 if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./components/App.js', () => {
     const App = require('./components/App').default
     render(App)
   })
 }
-
-render(App, 'hydrate')

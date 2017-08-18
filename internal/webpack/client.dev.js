@@ -1,7 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const WriteFilePlugin = require('write-file-webpack-plugin')
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
 
 const dir = rel => path.resolve(__dirname, '../../', rel)
@@ -22,7 +21,7 @@ module.exports = {
     filename: '[name].js',
     chunkFilename: '[name].js',
     path: dir('dist/client'),
-    publicPath: '/static/',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -38,7 +37,6 @@ module.exports = {
             {
               loader: 'css-loader',
               options: {
-                modules: true,
                 localIdentName: '[local]',
               },
             },
@@ -52,10 +50,10 @@ module.exports = {
   },
   plugins: [
     new ExtractCssChunks(),
-    new WriteFilePlugin(),
     new CopyWebpackPlugin([{ from: dir('public'), to: dir('dist/client') }]),
+    // build webpack bootstrap file
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
+      name: 'bootstrap',
       filename: '[name].js',
       minChunks: Infinity,
     }),

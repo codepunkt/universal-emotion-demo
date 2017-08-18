@@ -36,7 +36,7 @@ export default ({ clientStats }) => async (req, res, next) => {
     stylesheets,
   } = flushChunks(clientStats, {
     chunkNames,
-    before: ['manifest', 'vendor'],
+    before: ['bootstrap', 'vendor'],
     after: ['app'],
   })
 
@@ -51,11 +51,11 @@ export default ({ clientStats }) => async (req, res, next) => {
       <meta http-equiv="x-ua-compatible" content="ie=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <title>Universal Demo</title>
-      <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
-      <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
-      <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
-      <link rel="manifest" href="/static/manifest.json">
-      <link rel="mask-icon" href="/static/safari-pinned-tab.svg" color="#5d86c2">
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+      <link rel="manifest" href="/manifest.json">
+      <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5d86c2">
       <meta name="theme-color" content="#eaecef">
       ${cssString &&
         `<style type="text/css">
@@ -69,13 +69,6 @@ export default ({ clientStats }) => async (req, res, next) => {
       )}</script>
       ${cssHash}
       ${js}
-      <script>
-      if('serviceWorker' in navigator) {
-        navigator.serviceWorker
-                 .register('/static/sw.js')
-                 .then(function() { console.log("Service Worker Registered"); });
-      }
-      </script>
     </html>`
 
   res.send(html.replace(/\n|\s\s/g, ''))

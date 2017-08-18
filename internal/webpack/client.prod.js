@@ -1,25 +1,26 @@
 const path = require('path')
 const webpack = require('webpack')
 const BabiliPlugin = require('babili-webpack-plugin')
+const WorkboxPlugin = require('workbox-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const ExtractCssChunks = require('extract-css-chunks-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin
+
+const dir = rel => path.resolve(__dirname, '../../', rel)
 
 module.exports = {
   name: 'client',
   target: 'web',
   devtool: 'source-map',
   entry: {
-    app: [
-      'babel-polyfill',
-      path.resolve(__dirname, '../../src/client/index.js'),
-    ],
+    app: ['babel-polyfill', dir('src/client/index.js')],
   },
   output: {
     filename: '[name].[chunkhash].js',
     chunkFilename: '[name].[chunkhash].js',
-    path: path.resolve(__dirname, '../../dist/client'),
-    publicPath: '/static/',
+    path: dir('dist/client'),
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -30,13 +31,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: 'css-loader',
         use: ExtractCssChunks.extract({
           use: [
             {
               loader: 'css-loader',
               options: {
-                modules: true,
                 localIdentName: '[local]',
               },
             },
@@ -54,9 +53,9 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    // webpack bootstrap/manifest/runtime code
+    // build webpack bootstrap file
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
+      name: 'bootstrap',
       filename: '[name].[chunkhash].js',
       minChunks: Infinity,
     }),
@@ -67,14 +66,24 @@ module.exports = {
     //   minChunks: 2,
     // }),
     new ExtractCssChunks(),
+    // copy public files
+    new CopyWebpackPlugin([{ from: dir('public'), to: dir('dist/client') }]),
+    // minify resulting sources
     new BabiliPlugin({}, { comments: false }),
     new webpack.HashedModuleIdsPlugin(),
+    // analyze bundle statistics
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       defaultSizes: 'gzip',
       openAnalyzer: true,
       generateStatsFile: true,
       reportFilename: '../../stats.html',
+    }),
+    new WorkboxPlugin({
+      globDirectory: dir('dist/client'),
+      globPatterns: ['**/*.{html,js,css}'],
+      swSrc: dir('src/client/serviceWorker.js'),
+      swDest: dir('dist/client/serviceWorker.js'),
     }),
   ],
 }
